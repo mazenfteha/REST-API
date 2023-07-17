@@ -6,6 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 require('dotenv').config();
 import mongoose from 'mongoose';
+import router from './router/index'
 
 const app = express();
 
@@ -17,6 +18,9 @@ app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+
+app.use('/', router());
+
 const server = http.createServer(app);
 
 server.listen(5000, () => {
@@ -24,8 +28,7 @@ server.listen(5000, () => {
 });
 
 const MONGO_URL = process.env.MONOGO_URL
+
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);
-mongoose.connection.on('error', (error: Error) => {
-    console.log(error)
-})
+mongoose.connection.on('error', (error: Error) => console.log(error));
